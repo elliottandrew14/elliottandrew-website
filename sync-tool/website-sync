@@ -1,0 +1,307 @@
+#!/usr/bin/env python3
+"""
+Website Sync Tool - Upload creations catalog to MongoDB
+
+Usage:
+    website-sync                    # Sync all published creations
+    website-sync --dry-run          # Preview without uploading
+    website-sync E-00042            # Sync specific creation
+    website-sync --stats            # Show what would be synced
+    website-sync --force            # Re-sync everything
+"""
+
+import sys
+import csv
+import os
+import argparse
+from pathlib import Path
+from datetime import datetime
+from pymongo import MongoClient
+import config
+
+def connect_to_mongodb():
+    """Connect to MongoDB and return database"""
+    try:
+        client = MongoClient(config.MONGODB_URI)
+        # Test connection
+        client.admin.command('ping')
+        db = client[config.DATABASE_NAME]
+        print(f"✅ Connected to MongoDB: {config.DATABASE_NAME}")
+        return db
+    except Exception as e:
+        print(f"❌ MongoDB connection failed: {e}")
+        print("\nMake sure:")
+        print("1. You've set up MongoDB Atlas (see docs/MONGODB_SETUP.md)")
+        print("2. .env file exists with MONGODB_URI")
+        print("3. Your IP is whitelisted in MongoDB Atlas")
+        sys.exit(1)
+
+def read_catalog():
+    """Read creations catalog CSV"""
+    if not os.path.exists(config.CATALOG_CSV):
+        print(f"❌ Catalog not found: {config.CATALOG_CSV}")
+        sys.exit(1)
+
+    creations = []
+    with open(config.CATALOG_CSV, 'r', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            creations.append(row)
+
+    print(f"📖 Read {len(creations)} entries from catalog")
+    return creations
+
+def filter_published(creations, entity_id=None):
+    """Filter for published creations (or specific entity_id)"""
+    if entity_id:
+        filtered = [c for c in creations if c['entity_id'] == entity_id]
+        if not filtered:
+            print(f"❌ Entity {entity_id} not found in catalog")
+            sys.exit(1)
+        return filtered
+
+    # Filter for published='yes'
+    published = [c for c in creations if c.get('published', '').lower() == 'yes']
+    print(f"🎯 Found {len(published)} published creations")
+    return published
+
+def find_media_files(entity_id):
+    """Find media files for a creation"""
+    # Try multiple possible locations
+    possible_paths = [
+        Path(config.CREATIONS_BASE) / entity_id,
+        Path(config.CREATIONS_BASE) / 'Objects' / entity_id,
+        Path(config.CREATIONS_BASE) / 'Arrangements' / entity_id,
+    ]
+
+    for path in possible_paths:
+        if path.exists():
+            # Find all image and video files
+            images = []
+            videos = []
+
+            for ext in config.IMAGE_EXTENSIONS:
+                images.extend(list(path.glob(f'*{ext}')))
+                images.extend(list(path.glob(f'**/*{ext}')))  # Recursive
+
+            for ext in config.VIDEO_EXTENSIONS:
+                videos.extend(list(path.glob(f'*{ext}')))
+                videos.extend(list(path.glob(f'**/*{ext}')))  # Recursive
+
+            # Remove duplicates
+            images = list(set(images))
+            videos = list(set(videos))
+
+            return {
+                'path': str(path),
+                'images': [str(img) for img in images],
+                'videos': [str(vid) for vid in videos]
+            }
+
+    return None
+
+def transform_to_schema(row, media):
+    """Transform CSV row to MongoDB schema"""
+    # Helper to parse number or return None
+    def parse_int(value):
+        if value and value.strip():
+            try:
+                return int(value)
+            except:
+                pass
+        return None
+
+    # Helper to parse boolean
+    def parse_bool(value):
+        if value and value.strip().lower() in ['true', 'yes', '1']:
+            return True
+        return False
+
+    # Helper to parse array (comma or semicolon separated)
+    def parse_array(value):
+        if not value or not value.strip():
+            return []
+        # Split by comma or semicolon
+        items = value.replace(';', ',').split(',')
+        return [item.strip() for item in items if item.strip()]
+
+    doc = {
+        # Core identification
+        'entity_id': row.get('entity_id', ''),
+        'ulid': row.get('ulid', ''),
+
+        # Basic info
+        'type': row.get('type', ''),
+        'title': row.get('title', 'Untitled'),
+
+        # Dates
+        'created_at': row.get('created_at', ''),
+        'year': parse_int(row.get('year')) or parse_int(row.get('date_created_year')),
+        'date_created_year': parse_int(row.get('date_created_year')),
+        'date_created_month': parse_int(row.get('date_created_month')),
+        'date_created_day': parse_int(row.get('date_created_day')),
+        'date_captured_year': parse_int(row.get('date_captured_year')),
+        'date_captured_month': parse_int(row.get('date_captured_month')),
+        'date_captured_day': parse_int(row.get('date_captured_day')),
+        'date_added_year': parse_int(row.get('date_added_year')),
+        'date_added_month': parse_int(row.get('date_added_month')),
+        'date_added_day': parse_int(row.get('date_added_day')),
+
+        # Media details
+        'medium': row.get('medium', ''),
+        'status': row.get('status', ''),
+        'path': row.get('path', ''),
+        'has_folder': parse_bool(row.get('has_folder')),
+        'media_file': row.get('media_file', ''),
+        'contains': row.get('contains', ''),
+        'size': row.get('size', ''),
+        'aspect_ratio': row.get('aspect_ratio', ''),
+        'duration': row.get('duration', ''),
+
+        # Locations
+        'location_created': row.get('location_created', ''),
+        'location_captured': row.get('location_captured', ''),
+        'location_added': row.get('location_added', ''),
+
+        # Connections
+        'outgoing_connections': parse_array(row.get('outgoing_connections')),
+        'incoming_connections': parse_array(row.get('incoming_connections')),
+        'connection_count': parse_int(row.get('connection_count')) or 0,
+
+        # Categorization
+        'tags': parse_array(row.get('tags')),
+
+        # Website-specific
+        'published': True,  # Only published ones are synced
+
+        # Media (from found files)
+        'images': media['images'] if media else [],
+        'video': media['videos'][0] if media and media['videos'] else '',
+
+        # Metadata
+        'description': row.get('description', ''),
+        'notes': row.get('notes', ''),
+    }
+
+    return doc
+
+def sync_creation(db, row, dry_run=False):
+    """Sync a single creation to MongoDB"""
+    entity_id = row['entity_id']
+
+    # Find media files
+    media = find_media_files(entity_id)
+    if not media:
+        print(f"  ⚠️  No media files found for {entity_id}")
+
+    # Transform to schema
+    doc = transform_to_schema(row, media)
+
+    if dry_run:
+        print(f"  📄 Would sync {entity_id}: {doc['title']}")
+        if media:
+            print(f"     Images: {len(media['images'])}, Videos: {len(media['videos'])}")
+        return 'would_sync'
+
+    # Upsert to MongoDB
+    try:
+        result = db[config.COLLECTION_NAME].update_one(
+            {'entity_id': entity_id},
+            {'$set': doc},
+            upsert=True
+        )
+
+        if result.upserted_id:
+            print(f"  ✅ Added {entity_id}: {doc['title']}")
+            return 'added'
+        else:
+            print(f"  🔄 Updated {entity_id}: {doc['title']}")
+            return 'updated'
+
+    except Exception as e:
+        print(f"  ❌ Error syncing {entity_id}: {e}")
+        return 'error'
+
+def main():
+    parser = argparse.ArgumentParser(description='Sync creations catalog to MongoDB')
+    parser.add_argument('entity_id', nargs='?', help='Specific entity ID to sync (e.g., E-00042)')
+    parser.add_argument('--dry-run', action='store_true', help='Preview without uploading')
+    parser.add_argument('--stats', action='store_true', help='Show what would be synced')
+    parser.add_argument('--force', action='store_true', help='Re-sync everything (ignore modifications)')
+
+    args = parser.parse_args()
+
+    print("=" * 70)
+    print("Website Sync Tool - Elliott Andrew Creative Archive")
+    print("=" * 70)
+    print()
+
+    # Read catalog
+    creations = read_catalog()
+
+    # Filter published (or specific entity)
+    to_sync = filter_published(creations, args.entity_id)
+
+    if not to_sync:
+        print("❌ No creations to sync")
+        sys.exit(0)
+
+    # Stats mode
+    if args.stats:
+        print(f"\n📊 Stats for {len(to_sync)} creations to sync:")
+        print(f"   Total: {len(to_sync)}")
+
+        years = {}
+        media = {}
+        for c in to_sync:
+            year = c.get('year') or c.get('date_created_year')
+            if year:
+                years[year] = years.get(year, 0) + 1
+
+            medium = c.get('medium', 'unknown')
+            media[medium] = media.get(medium, 0) + 1
+
+        print(f"\n   By Year:")
+        for year in sorted(years.keys(), reverse=True):
+            print(f"     {year}: {years[year]}")
+
+        print(f"\n   By Medium:")
+        for med in sorted(media.keys()):
+            print(f"     {med}: {media[med]}")
+
+        sys.exit(0)
+
+    # Connect to MongoDB
+    db = connect_to_mongodb()
+
+    # Sync creations
+    print(f"\n🔄 Syncing {len(to_sync)} creations...")
+    if args.dry_run:
+        print("   (DRY RUN - No changes will be made)\n")
+    print()
+
+    stats = {'added': 0, 'updated': 0, 'error': 0, 'would_sync': 0}
+
+    for row in to_sync:
+        result = sync_creation(db, row, dry_run=args.dry_run)
+        stats[result] += 1
+
+    # Summary
+    print()
+    print("=" * 70)
+    if args.dry_run:
+        print(f"✅ Dry run complete! Would sync {stats['would_sync']} creations")
+    else:
+        print(f"✅ Sync complete!")
+        print(f"   Added: {stats['added']}")
+        print(f"   Updated: {stats['updated']}")
+        if stats['error'] > 0:
+            print(f"   Errors: {stats['error']}")
+
+    print()
+    print(f"🌐 Check MongoDB Atlas dashboard to see your data")
+    print(f"📡 Test API: http://localhost:5000/api/creations")
+    print("=" * 70)
+
+if __name__ == '__main__':
+    main()

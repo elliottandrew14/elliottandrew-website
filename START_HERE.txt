@@ -1,0 +1,98 @@
+================================================================================
+  ELLIOTT ANDREW WEBSITE - HOW TO GET BACK TO WORK
+================================================================================
+
+PROJECT LOCATION (UPDATED 2025-11-09):
+  ~/Library/CloudStorage/GoogleDrive-bigeandrew@gmail.com/My Drive/Operating/Systems/Creative Practice System/elliottandrew-website
+
+  ⚠️  FILES MOVED TO GOOGLE DRIVE (now cloud-backed!)
+  Old location on 2025 Drive has been removed.
+
+DOCUMENTATION:
+  - NEXT_STEPS_2025-11-09.md - START HERE (updated guide after reorganization)
+  - PROJECT_STATUS.md - Complete technical documentation
+  - README.md - Overview and quick links
+
+================================================================================
+  TO START WORKING
+================================================================================
+
+1. Open two terminal windows
+
+2. In Terminal 1 - Start Backend:
+
+   cd ~/Library/CloudStorage/GoogleDrive-bigeandrew@gmail.com/My\ Drive/Operating/Systems/Creative\ Practice\ System/elliottandrew-website/backend
+   npm run dev
+
+   Should say: "Server running on port 3001"
+
+3. In Terminal 2 - Start Frontend:
+
+   cd ~/Library/CloudStorage/GoogleDrive-bigeandrew@gmail.com/My\ Drive/Operating/Systems/Creative\ Practice\ System/elliottandrew-website/frontend
+   npm run dev
+
+   Should say: "Ready on http://localhost:3000"
+
+4. Open browser to: http://localhost:3000
+
+5. Read NEXT_STEPS_2025-11-09.md for updated instructions
+
+================================================================================
+  WHAT'S COMPLETE
+================================================================================
+
+✅ Backend API (MongoDB + Express)
+✅ Filter page with expandable categories
+✅ Multi-select filtering (Year, Medium, Type, Tags, etc.)
+✅ Results grid view with thumbnails
+✅ View mode selection (Grid, Slideshow, Timeline, Graph, Map)
+✅ Navigation menu (hamburger)
+✅ ABC Diatype font
+✅ Archive.org aesthetic
+
+================================================================================
+  WHAT'S NEXT (TODO)
+================================================================================
+
+⏳ Individual work detail pages (/work/[id])
+⏳ Implement view modes (slideshow, timeline, graph, map)
+⏳ Search functionality
+⏳ Video thumbnail generation (need FFmpeg)
+⏳ About/News/Email pages
+
+================================================================================
+  QUICK TROUBLESHOOTING
+================================================================================
+
+Backend not starting?
+  - Check MongoDB is accessible
+  - Check backend/.env file exists with MONGODB_URI
+
+Frontend not starting?
+  - Check Node.js is installed (node --version)
+  - Try: cd frontend && rm -rf .next && npm run dev
+
+Images not loading?
+  - Backend must be running on port 3001
+  - Check MEDIA_BASE_PATH in backend/.env
+
+Need more help?
+  - Read PROJECT_STATUS.md (comprehensive guide)
+  - Read backend/README.md (API docs)
+  - Read frontend/README.md (frontend docs)
+
+================================================================================
+  FOR CLAUDE (when you return to this project)
+================================================================================
+
+1. Read PROJECT_STATUS.md first to understand current state
+2. Check "Recent Changes" section to see what was done last
+3. Check "Known Issues & Technical Notes" for critical info
+4. Review TODO list to see what's pending
+5. User can say "continue working on website" to resume
+
+Project is approximately 60% complete (Session 2 in progress).
+
+================================================================================
+  LAST UPDATED: 2025-11-06
+================================================================================
