@@ -1,27 +1,34 @@
-## Visitor Inquiry/Description Overlay
+## Newsletter Signup
 
-**Feature:** Add an overlay that allows visitors to describe what they're looking for or leave feedback
+**Feature:** Add newsletter signup overlay/form for email updates
 
 **Nearer Future Priority**
 
-**Potential Use Cases:**
-- Commission inquiries - visitors describe what kind of work they want
-- General inquiries about specific pieces
-- Feedback or questions about the archive
-- Custom print requests
-- Exhibition/collaboration inquiries
+**What:**
+- Simple email signup form
+- Collect emails for newsletter/updates
+- Send updates about new work, exhibitions, prints, etc.
 
-**Implementation Ideas:**
-- Overlay/modal triggered by button (maybe in menu or on work pages)
-- Simple form: Name, Email, Message
-- Could be contextual (e.g., on a work page, auto-fills which work they're asking about)
-- Sends to your email or saves to database
+**Implementation:**
+- Overlay/modal triggered by button (in menu or footer)
+- Simple form: Name, Email
+- Store in database or integrate with email service (Mailchimp, ConvertKit, Buttondown, etc.)
+- Confirmation email with double opt-in
+- Easy unsubscribe option
+
+**Use Cases:**
+- Announce new work added to archive
+- Exhibition openings and events
+- New prints available
+- Studio updates
+- Quarterly or monthly newsletters
 
 **Benefits:**
-- Direct communication channel with visitors
-- Capture commission/custom work inquiries
-- Better understand visitor needs and interests
-- Professional inquiry system
+- Build direct relationship with collectors and viewers
+- Announce new work and exhibitions
+- Drive traffic back to website
+- Alternative to social media for updates
+- Maintain contact with interested visitors
 
 **Priority:** Nearer future
 
