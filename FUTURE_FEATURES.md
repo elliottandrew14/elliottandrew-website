@@ -1,3 +1,46 @@
+## Mobile Version - Simplified Curated Experience
+
+**Feature:** Create a mobile-optimized version with curated content instead of full filter system
+
+**Target Audience:**
+- General public / casual viewers (not fine art professionals)
+- Quick browsing experience on phones
+- Lower engagement/shorter attention span
+
+**Approach:**
+- **Desktop:** Keep full filter system for galleries, curators, residency reviewers
+- **Mobile:** Simplified curated experience
+
+**Mobile Design:**
+- Show works from ONE selection (e.g., "Featured" or "Mobile")
+- ONE view mode (grid or scroll - no switching)
+- Simple navigation: About, Contact, News only
+- No filter options, no complexity
+- Individual work pages same as desktop (photos display, videos link out)
+
+**Implementation:**
+- Device detection to route mobile users
+- Filter by selection field (already exists in database)
+- Reuse existing work detail pages
+- Simple grid/scroll feed layout
+
+**Benefits:**
+- Two audiences, two experiences
+- Professionals get deep research tool (desktop)
+- General viewers get accessible portfolio (mobile)
+- Low friction for casual discovery
+- You control what mobile users see via selections
+
+**Alternative Considered:**
+- Using Cargo for mobile ($179/year)
+- Decided against for now - prefer integrated solution
+
+**Priority:** Future enhancement
+
+**Date noted:** 2025-11-17
+
+---
+
 ## Native Display for 3D Objects & Projects
 
 **Feature:** Display 3D objects, installations, and other non-photo projects directly on the website instead of linking externally
