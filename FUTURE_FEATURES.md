@@ -1,3 +1,79 @@
+## Visitor Inquiry/Description Overlay
+
+**Feature:** Add an overlay that allows visitors to describe what they're looking for or leave feedback
+
+**Nearer Future Priority**
+
+**Potential Use Cases:**
+- Commission inquiries - visitors describe what kind of work they want
+- General inquiries about specific pieces
+- Feedback or questions about the archive
+- Custom print requests
+- Exhibition/collaboration inquiries
+
+**Implementation Ideas:**
+- Overlay/modal triggered by button (maybe in menu or on work pages)
+- Simple form: Name, Email, Message
+- Could be contextual (e.g., on a work page, auto-fills which work they're asking about)
+- Sends to your email or saves to database
+
+**Benefits:**
+- Direct communication channel with visitors
+- Capture commission/custom work inquiries
+- Better understand visitor needs and interests
+- Professional inquiry system
+
+**Priority:** Nearer future
+
+**Date noted:** 2025-11-17
+
+---
+
+## Postcard/Zine Mailing List Signup
+
+**Feature:** Allow visitors to sign up for physical mail (postcards, zines, announcements)
+
+**Far Future Priority**
+
+**Concept:**
+- Visitors can sign up to receive physical mail from you
+- Could be postcards of new work
+- Artist zines or publications
+- Exhibition announcements
+- Quarterly or annual mailings
+
+**Implementation:**
+- Signup form (name, address, preferences)
+- Store in database with mailing addresses
+- Export to mailing labels or integrate with mailing services
+- Preference options: postcards only, zines, all mailings, etc.
+
+**Technical Considerations:**
+- Address validation
+- Privacy/GDPR compliance for storing addresses
+- Opt-in/opt-out management
+- Integration with postal services (printing labels, etc.)
+- Cost tracking for mailings
+
+**Benefits:**
+- Build physical mailing list for exhibitions/events
+- Direct connection with collectors and fans
+- Tangible marketing/presence
+- Alternative to digital-only engagement
+- Personal touch that stands out
+
+**Inspiration:**
+- Artist mailing lists for exhibition cards
+- Quarterly art zines/newsletters
+- Limited edition postcard series
+- Annual studio update mailings
+
+**Priority:** Far future (explore after other features are stable)
+
+**Date noted:** 2025-11-17
+
+---
+
 ## Mobile Version - Simplified Curated Experience
 
 **Feature:** Create a mobile-optimized version with curated content instead of full filter system
