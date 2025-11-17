@@ -1,3 +1,92 @@
+## Scroll View Mode
+
+**Feature:** Add vertical scroll view for browsing creations
+
+**Nearer Future Priority**
+
+**What:**
+- Infinite or paginated vertical scroll of works
+- One work at a time or multiple in sequence
+- Like Instagram/social media feed but for archive
+- Alternative to grid and slideshow views
+
+**Implementation:**
+- Add "scroll" to view mode options (alongside grid, slideshow)
+- Vertical layout with works stacked
+- Could show: image + title + basic info per work
+- Lazy loading for performance
+- Smooth scrolling experience
+
+**Design Options:**
+- Full-width images with info below
+- Or centered images with info sidebar
+- Sticky navigation/filters on side
+- "Back to top" button
+
+**Benefits:**
+- Natural browsing on both desktop and mobile
+- Easy to browse many works quickly
+- Familiar UX pattern
+- Works well for storytelling/narrative browsing
+
+**Priority:** Nearer future
+
+**Date noted:** 2025-11-17
+
+---
+
+## Selections as Curated Collections
+
+**Feature:** Transform selections into standalone curated collection pages with custom view/order settings
+
+**Nearer Future Priority**
+
+**Concept:**
+- Each selection becomes a dedicated page/collection
+- Click on a selection → goes directly to that collection page
+- Each collection has its own presentation settings:
+  - View mode (grid, scroll, slideshow, etc.)
+  - Sort order (chronological, reverse chronological, custom order, etc.)
+  - Layout preferences
+- Independent of filter system - curated, intentional presentations
+
+**Example Collections:**
+- "Featured Work" → Grid view, custom order (your picks)
+- "2024 Highlights" → Scroll view, chronological
+- "Black & White" → Slideshow, curated sequence
+- "Installations" → Grid, sorted by scale
+
+**Implementation:**
+- `/collection/[selection-name]` routes
+- Database: Add fields to selections or create collections table:
+  - selection_name
+  - view_mode (grid/scroll/slideshow)
+  - sort_order (custom/chronological/reverse/etc.)
+  - custom_order (array of entity_ids for manual sequencing)
+  - description (optional intro text)
+- Admin/CMS to configure each collection's settings
+- Or define in database/config file
+
+**Benefits:**
+- Present work in curated, intentional ways
+- Each collection tells a story or shows a theme
+- Better than just filtering - you control exact presentation
+- Can share direct links to collections
+- Professional portfolio presentation
+- Collections can evolve independently
+
+**Use Cases:**
+- Share specific collection with galleries (e.g., "Available Prints")
+- Feature seasonal or thematic collections
+- Highlight work for specific contexts
+- Create exhibition-like presentations
+
+**Priority:** Nearer future
+
+**Date noted:** 2025-11-17
+
+---
+
 ## Newsletter Signup
 
 **Feature:** Add newsletter signup overlay/form for email updates
