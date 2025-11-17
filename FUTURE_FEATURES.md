@@ -1,3 +1,37 @@
+## Native Display for 3D Objects & Projects
+
+**Feature:** Display 3D objects, installations, and other non-photo projects directly on the website instead of linking externally
+
+**Current State:**
+- Photos are displayed natively on the website (click → view on site)
+- 3D objects, installations, and other projects link externally (Cargo, YouTube, etc.)
+- Both types have info pages on the site, but actual content lives elsewhere for non-photos
+
+**Future Goal:**
+- Integrate 3D viewers (Sketchfab embeds, three.js, etc.)
+- Embed videos directly (instead of linking to Vimeo/YouTube)
+- Display project documentation natively
+- Provide consistent viewing experience for all work types
+
+**Benefits:**
+- Unified user experience
+- Keep visitors on your site
+- Better control over presentation
+- Potential for interactive experiences
+- Improved analytics and engagement tracking
+
+**Technical Considerations:**
+- 3D file formats and viewers
+- Video hosting (self-hosted vs. embedded)
+- Page load performance with rich media
+- Mobile device compatibility
+- Bandwidth and storage costs
+
+**Priority:** Future enhancement (currently subject to change)
+
+**Date noted:** 2025-11-17
+
+---
 
 ## Exhibition/Installation History
 
