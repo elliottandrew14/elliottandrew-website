@@ -170,45 +170,38 @@
 
 ---
 
-## Mobile Version - Simplified Curated Experience
+## ✅ Mobile Version - Simplified Curated Experience (COMPLETED)
 
 **Feature:** Create a mobile-optimized version with curated content instead of full filter system
 
-**Target Audience:**
-- General public / casual viewers (not fine art professionals)
-- Quick browsing experience on phones
-- Lower engagement/shorter attention span
-
-**Approach:**
-- **Desktop:** Keep full filter system for galleries, curators, residency reviewers
-- **Mobile:** Simplified curated experience
-
-**Mobile Design:**
-- Show works from ONE selection (e.g., "Featured" or "Mobile")
-- ONE view mode (grid or scroll - no switching)
-- Simple navigation: About, Contact, News only
-- No filter options, no complexity
-- Individual work pages same as desktop (photos display, videos link out)
+**Status:** ✅ Implemented on 2025-11-25
 
 **Implementation:**
-- Device detection to route mobile users
-- Filter by selection field (already exists in database)
-- Reuse existing work detail pages
-- Simple grid/scroll feed layout
+- Viewport detection using `useIsMobile` hook (breakpoint: 768px)
+- Mobile users see `MobileGrid` component with 2-column grid
+- Desktop users see full `FilterPage` with filters
+- Simple mobile navigation: ELLIOTT ANDREW, INFO, PRINTS
+- Shows all published works in clean grid (no filters)
+- Individual work pages same as desktop
 
-**Benefits:**
+**Files Created:**
+- `hooks/useIsMobile.ts` - Mobile detection hook
+- `components/MobileGrid.tsx` - Simplified mobile grid
+- `components/ResponsiveHome.tsx` - Conditional renderer
+
+**Benefits Achieved:**
 - Two audiences, two experiences
-- Professionals get deep research tool (desktop)
-- General viewers get accessible portfolio (mobile)
+- Professionals get deep research tool (desktop ≥768px)
+- General viewers get accessible portfolio (mobile <768px)
 - Low friction for casual discovery
-- You control what mobile users see via selections
+- Clean, fast mobile browsing
 
-**Alternative Considered:**
-- Using Cargo for mobile ($179/year)
-- Decided against for now - prefer integrated solution
+**Future Enhancements:**
+- Add ability to filter mobile view by selection field
+- Consider adding scroll view as alternative to grid
+- Add mobile-specific sorting options
 
-**Priority:** Future enhancement
-
+**Date completed:** 2025-11-25
 **Date noted:** 2025-11-17
 
 ---
