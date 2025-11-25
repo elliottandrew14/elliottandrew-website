@@ -1,3 +1,33 @@
+## Mobile Prints Scroll View
+
+**Feature:** Add mobile prints page with curated scroll view
+
+**Future Priority**
+
+**What:**
+- Mobile-specific prints page showing selected prints
+- Vertical scroll format (like mobile WORK grid but scrollable)
+- Show a few curated print options
+- Easy browsing on mobile devices
+
+**Implementation:**
+- Create `/prints` mobile view
+- Filter prints by selection or status
+- Vertical scroll layout with print images
+- Include price, size, availability info
+- Link back to INFO page
+
+**Design:**
+- Could match scroll view pattern
+- Or simple stacked grid
+- Tap print → view details/purchase
+
+**Priority:** Future
+
+**Date noted:** 2025-11-25
+
+---
+
 ## Scroll View Mode
 
 **Feature:** Add vertical scroll view for browsing creations
