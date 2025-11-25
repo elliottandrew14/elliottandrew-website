@@ -1,3 +1,69 @@
+## 🚀 PRE-LAUNCH: Domain Swap (elliottandrew.org ↔ works.elliottandrew.org)
+
+**Priority:** HIGH - Must complete before public launch
+
+**Current State:**
+- `elliottandrew.org` → Cargo (old experimental site)
+- `works.elliottandrew.org` → Vercel (new Next.js site)
+- Backend/Database → Railway (no change needed)
+
+**Goal:**
+- `elliottandrew.org` → Vercel (new site becomes primary) ✓
+- `works.elliottandrew.org` → Cargo (old site for experiments)
+
+**Step-by-Step Process:**
+
+### Part 1: Log into Cargo
+1. Go to: cargo.site → Log in
+2. Find site settings for elliottandrew.org
+3. Look for "Custom Domain" or "Domain Settings"
+4. Change custom domain from `elliottandrew.org` → `works.elliottandrew.org`
+5. This frees up elliottandrew.org for Vercel
+
+### Part 2: Update DNS Records (in Cargo domain management)
+
+**Remove from Cargo DNS:**
+- Current A/CNAME records pointing to Cargo
+
+**Add for Vercel:**
+```
+Type: A
+Name: @
+Value: 76.76.21.21
+
+Type: CNAME
+Name: www
+Value: cname.vercel-dns.com
+```
+
+### Part 3: Configure Vercel
+1. Go to: vercel.com → Your project dashboard
+2. Settings → Domains
+3. Add domain: `elliottandrew.org`
+4. Vercel will verify and configure automatically
+
+### Part 4: Email Forwarding (if needed)
+```
+Type: MX
+Priority: 10
+Value: [your email forwarding service]
+```
+
+**Notes:**
+- DNS propagation can take 24-48 hours
+- Test both domains after swap
+- Keep works.elliottandrew.org pointed at Cargo for experiments
+- Backend on Railway remains unchanged
+
+**Prerequisites:**
+- Access to Cargo DNS settings
+- Access to Vercel project settings
+- Domain registered through Cargo or elsewhere?
+
+**Date noted:** 2025-11-25
+
+---
+
 ## Mobile Prints Scroll View
 
 **Feature:** Add mobile prints page with curated scroll view
